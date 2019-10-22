@@ -1,29 +1,30 @@
 FROM php:7.2-fpm
 
 # 添加源
-RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak
-ADD sources.list /etc/apt/sources.list
-RUN apt-get update && \
-        pecl channel-update https://pecl.php.net/channel.xml
+# RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak
+# ADD sources.list /etc/apt/sources.list
+RUN apt-get update && pecl channel-update https://pecl.php.net/channel.xml
 
 # phpredis
-COPY redis-5.0.2.tgz /home
-RUN pecl install /home/redis-5.0.2.tgz && \
-    docker-php-ext-enable redis && \
-    rm /home/redis-5.0.2.tgz
-
+RUN pecl install redis
+RUN docker-php-ext-enable redis 
 
 # swoole
-COPY swoole-4.4.8.tgz /home
-RUN pecl install /home/swoole-4.4.8.tgz && \
-    docker-php-ext-enable swoole && \
-    rm /home/swoole-4.4.8.tgz
+RUN pecl install swoole
+RUN docker-php-ext-enable swoole 
 
 # mongodb
-COPY mongodb-1.6.0.tgz /home
-RUN pecl install /home/mongodb-1.6.0.tgz && \
-    docker-php-ext-enable mongodb && \
-    rm /home/mongodb-1.6.0.tgz
+RUN pecl install mongodb
+RUN docker-php-ext-enable mongodb
+
+
+# BC Math
+RUN docker-php-ext-install bcmath
+
+# protobuf
+RUN pecl install protobuf
+RUN docker-php-ext-enable protobuf
+
 
 # opcache
 RUN docker-php-ext-install opcache
