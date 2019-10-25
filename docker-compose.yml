@@ -21,6 +21,7 @@ services:
       - ${WORKER_DIR}:/var/www
     ports: 
       - 9000:9000
+      - 9501:9501
     depends_on: 
       - mysql
       - redis
